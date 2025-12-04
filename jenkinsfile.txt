@@ -5,8 +5,8 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/YOUR_USERNAME/mywebapp.git'
+                git branch: 'master',
+                    url: 'https://github.com/AkashOjha100/MyWeb.git'
             }
         }
 
@@ -19,10 +19,10 @@ pipeline {
         stage('Stop Old Container') {
             steps {
                 sh '''
-                if [ $(docker ps -q -f name=mywebapp) ]; then
-                    docker stop mywebapp
-                    docker rm mywebapp
-                fi
+                    if [ $(docker ps -q -f name=mywebapp) ]; then
+                        docker stop mywebapp
+                        docker rm mywebapp
+                    fi
                 '''
             }
         }
@@ -34,3 +34,4 @@ pipeline {
         }
     }
 }
+
