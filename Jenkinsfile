@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/AkashOjha100/MyWeb.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t mywebapp .'
+            }
+        }
+
+        stage('Stop Old Container') {
+            steps {
+                sh '''
+                    if [ $(docker ps -q -f name=mywebapp) ]; then
+                        docker stop mywebapp
+                        docker rm mywebapp
+                    fi
+                '''
+            }
+        }
+
+        stage('Run New Container') {
+            steps {
+                sh 'docker run -d --name mywebapp -p 80:80 mywebapp'
+            }
+        }
+    }
+}
